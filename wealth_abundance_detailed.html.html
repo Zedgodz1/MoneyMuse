@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSBC Life Wealth Abundance - Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Overview, Account Structure, Policy Benefits, Suitability/Risks: Textual. Goal: Inform.
+        - Bonuses: Tables/text for rates and conditions specific to the 10-year MIP. Goal: Inform.
+        - Fees & Charges:
+            - AMF, BRC: Textual explanation. Goal: Inform.
+            - Premium Charge, PHC: Textual. Goal: Inform. (PHC is currently nil but can be imposed).
+            - EEC & PWC: Chart.js line charts showing % decrease over the 10-year MIP. Goal: Visualize, Inform. Library: Chart.js.
+        - Flexibility: Textual explanation of rules for the 10-year MIP. Goal: Inform.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fffbeb; /* amber-50 */ color: #334155; /* slate-700 */ }
+        .content-section.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; } /* slate-100 */
+        ::-webkit-scrollbar-thumb { background: #1D4ED8; border-radius: 10px; } /* blue-700 */
+        ::-webkit-scrollbar-thumb:hover { background: #1E40AF; } /* blue-800 */
+        details > summary { cursor: pointer; font-weight: 600; color: #1E3A8A; /* blue-800 */}
+        .tooltip { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted black;}
+        .tooltip .tooltiptext { visibility: hidden; width: 220px; background-color: #334155; color: #fff; text-align: center; border-radius: 6px; padding: 8px; position: absolute; z-index: 10; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-size: 0.875rem; line-height: 1.25rem; }
+        .tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #334155 transparent transparent transparent; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-blue-700 text-white p-5 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-2xl lg:text-3xl font-bold">HSBC Life Wealth Abundance</h1>
+            <nav class="mt-3 sm:mt-0">
+                <ul class="flex flex-wrap justify-center space-x-3 sm:space-x-4 text-sm lg:text-base">
+                    <li><a href="#overview" class="hover:text-blue-200 transition duration-300">Overview</a></li>
+                    <li><a href="#accounts" class="hover:text-blue-200 transition duration-300">Accounts</a></li>
+                    <li><a href="#bonuses" class="hover:text-blue-200 transition duration-300">Bonuses</a></li>
+                    <li><a href="#fees" class="hover:text-blue-200 transition duration-300">Fees</a></li>
+                    <li><a href="#benefits" class="hover:text-blue-200 transition duration-300">Benefits</a></li>
+                    <li><a href="#flexibility" class="hover:text-blue-200 transition duration-300">Flexibility</a></li>
+                    <li><a href="#suitability" class="hover:text-blue-200 transition duration-300">Suitability</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <div class="my-6 p-4 bg-white rounded-lg shadow-md text-center">
+            <p class="text-lg font-semibold text-blue-700">This plan has a Minimum Investment Period (MIP) of 10 Years.</p>
+        </div>
+
+        <section id="overview" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">1. Product Overview</h2>
+            <p class="mb-3">HSBC Life Wealth Abundance is a whole life, regular premium Investment-Linked Plan (ILP) with a <strong class="text-blue-600">Minimum Investment Period (MIP) of 10 years</strong>. It provides insurance protection up to Age 99 and allows investment in various ILP Sub-Funds.</p>
+            <p class="mb-3">The plan is designed for long-term wealth accumulation, combining investment growth potential with insurance coverage. It's available in SGD and USD. Remember, as an ILP, your investment is subject to risks, and early termination can be costly.</p>
+            <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-500 text-blue-700">
+                <p><strong class="font-semibold">Key Objective:</strong> To offer a blend of insurance protection and investment opportunities, with bonuses to reward policyholders over a 10-year MIP and beyond.</p>
+            </div>
+        </section>
+
+        <section id="accounts" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">2. Account Structure</h2>
+            <p class="mb-4">The plan utilizes two accounts for managing your premiums and investments:</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-2">Regular Premium Account</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Regular Premiums are allocated here.</li>
+                        <li>Start-up, Power-up, and Loyalty Bonuses are credited here.</li>
+                        <li>Subject to Account Maintenance Fee (AMF), Partial Withdrawal Charge (PWC) during MIP, and Early Encashment Charge (EEC) during MIP. Premium Holiday Charge (PHC) may apply if imposed by HSBC Life.</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-2">Top-up Account</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Recurring Single Premiums and Top-up Premiums are allocated here.</li>
+                        <li>Subject to a 3% premium charge upon allocation.</li>
+                        <li>Withdrawals are generally not subject to PWC or EEC.</li>
+                        <li>Not eligible for Start-up, Power-up, or Loyalty Bonuses.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="bonuses" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">3. Bonuses for Your Journey</h2>
+            <p class="mb-4">HSBC Life Wealth Abundance offers bonuses to enhance your policy's value, credited to the Regular Premium Account.</p>
+            <div class="space-y-6">
+                <div class="p-4 border border-slate-200 rounded-lg bg-slate-50">
+                    <h3 class="text-xl font-semibold text-blue-600 mb-2">Start-up Bonus</h3>
+                    <p class="text-sm mb-3">A one-time bonus based on your Regular Premium paid in the first Policy Year.</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm">
+                            <thead class="bg-blue-100">
+                                <tr>
+                                    <th class="p-2 border border-slate-300">Annual Premium</th>
+                                    <th class="p-2 border border-slate-300">Start-up Bonus Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                <tr><td class="p-2 border border-slate-300">$6,000 to less than $24,000</td><td class="p-2 border border-slate-300 text-center"><strong>8%</strong></td></tr>
+                                <tr><td class="p-2 border border-slate-300">$24,000 to less than $42,000</td><td class="p-2 border border-slate-300 text-center"><strong>10%</strong></td></tr>
+                                <tr><td class="p-2 border border-slate-300">$42,000 and above</td><td class="p-2 border border-slate-300 text-center"><strong>12%</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs mt-2 text-slate-500">Not payable if Life Assured dies by suicide within 1 year or if policy cancelled during free-look. Bonus Recovery Charge applies if Regular Premium is reduced during MIP.</p>
+                </div>
+
+                <div class="p-4 border border-slate-200 rounded-lg bg-slate-50">
+                    <h3 class="text-xl font-semibold text-blue-600 mb-2">Power-up Bonus</h3>
+                    <p class="text-sm mb-3">Paid monthly from the end of the first Policy Month of Policy Year 5 until the end of the 10-year MIP.</p>
+                    <p class="text-sm">Rate: <strong class="text-blue-700">0.1% per annum</strong> (0.1%/12 monthly) of the prevailing Account Value of the Regular Premium Account.</p>
+                    <p class="text-xs mt-2 text-slate-500">Suspended for 12 months following: Partial Withdrawal from Regular Premium Account, Premium Holiday, or Regular Premium reduction during MIP.</p>
+                </div>
+
+                <div class="p-4 border border-slate-200 rounded-lg bg-slate-50">
+                    <h3 class="text-xl font-semibold text-blue-600 mb-2">Loyalty Bonus</h3>
+                    <p class="text-sm mb-3">Paid monthly starting from the end of the first Policy Month *after* the 10-year MIP expires (i.e., from Year 11 onwards).</p>
+                    <p class="text-sm">Rate: <strong class="text-blue-700">0.3% per annum</strong> (0.3%/12 monthly) of the prevailing Account Value of the Regular Premium Account.</p>
+                    <p class="text-xs mt-2 text-slate-500">Suspended for 12 months following a Partial or Regular Withdrawal from the Regular Premium Account.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fees" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">4. Fees and Charges (10-Year MIP)</h2>
+            <p class="mb-4">It's important to understand the fees. Most are deducted by unit cancellation.</p>
+            <div class="space-y-3">
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Premium Charge</summary>
+                    <p class="text-sm mt-2">- Regular Premiums: <strong class="text-green-600">0%</strong> (100% allocated).</p>
+                    <p class="text-sm mt-1">- Recurring Single Premiums & Top-up Premiums: <strong class="text-red-600">3%</strong> of premium paid (deducted after allocation). Guaranteed.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Premium Holiday Charge (PHC)</summary>
+                    <p class="text-sm mt-2"><strong class="text-green-600">Currently Nil.</strong> HSBC Life reserves the right to impose a PHC (not more than 50% of prevailing Regular Premium) on missed Regular Premiums during MIP with 30 days' notice. This would be deducted from the Regular Premium Account.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Account Maintenance Fee (AMF)</summary>
+                    <p class="text-sm mt-2">Charged monthly from Regular Premium Account, on its account value. Not guaranteed.</p>
+                    <p class="text-sm mt-1">- During MIP (Years 1-10): <strong class="text-red-600">2.10% per annum</strong>.</p>
+                    <p class="text-sm mt-1">- After MIP (Year 11 onwards): <strong class="text-red-600">0.60% per annum</strong>.</p>
+                    <p class="text-sm mt-1">Monthly AMF = (Annual AMF Rate / 12) x Account Value of Regular Premium Account.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Bonus Recovery Charge (BRC)</summary>
+                    <p class="text-sm mt-2">Charged if Regular Premium is reduced during the 10-year MIP. Deducted from Regular Premium Account. Not guaranteed.</p>
+                    <p class="text-sm mt-1">Formula: `[Current Start-up Bonus $ - Reduced Start-up Bonus $] x (1 - (Months Premium Paid / 120 months))`</p>
+                </details>
+                 <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Insurance Charge</summary>
+                    <p class="text-sm mt-2"><strong class="text-green-600">No separate insurance charge.</strong> The cost of insurance is factored into the product structure.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Partial Withdrawal Charge (PWC)</summary>
+                    <p class="text-sm mt-2">Imposed on withdrawals from Regular Premium Account during the 10-year MIP (Policy Years 1-10). Deducted from withdrawal amount. Not guaranteed (rates can be revised).</p>
+                    <p class="text-xs mt-1 text-slate-500">Not applicable to Top-up Account withdrawals or after MIP. Free Partial Withdrawal Benefit available (see Flexibility).</p>
+                    <div class="chart-container mt-3">
+                        <canvas id="pwcChartAbundance"></canvas>
+                    </div>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Early Encashment Charge (EEC)</summary>
+                    <p class="text-sm mt-2">Imposed on Regular Premium Account if policy is fully surrendered or terminates (other than by death/TI) during the 10-year MIP. EEC rates are guaranteed.</p>
+                    <div class="chart-container mt-3">
+                        <canvas id="eecChartAbundance"></canvas>
+                    </div>
+                    <p class="text-xs mt-2 text-slate-500">EEC does not apply to Top-up Account.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Other Charges</summary>
+                    <p class="text-sm mt-2">
+                        - **Switching Fee:** Currently Nil.
+                        - **Redemption Fee:** Currently Nil.
+                        - **ILP Sub-Fund Annual Management Fee & Other Charges:** Charged by fund managers, vary by fund, reflected in unit price. Not guaranteed.
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <section id="benefits" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">5. Insurance Protection & Key Benefits</h2>
+            <div class="space-y-4">
+                <div class="p-3 border rounded-lg bg-slate-50">
+                    <h3 class="text-lg font-semibold text-blue-600">Death & Terminal Illness (TI) Benefit</h3>
+                    <p class="text-sm">Sum of:
+                        <br> (i) Higher of [101% of total Regular Premiums paid (less cumulative partial/regular withdrawals from Regular Premium Account)] OR [Account Value of Regular Premium Account]
+                        <br> (ii) PLUS Account Value of Top-up Account.
+                    </p>
+                    <p class="text-xs mt-1 text-slate-500">TI max S$3M aggregate. Exclusions apply.</p>
+                </div>
+                <div class="p-3 border rounded-lg bg-slate-50">
+                    <h3 class="text-lg font-semibold text-blue-600">Accidental Death Benefit</h3>
+                    <p class="text-sm">If death by Accident before Age 75, pays sum of:
+                        <br> (i) Higher of [200% of total Regular Premiums paid (capped S$2M or equivalent), less cumulative partial/regular withdrawals from Regular Premium Account] OR [Account Value of Regular Premium Account]
+                        <br> (ii) PLUS Account Value of Top-up Account.
+                    </p>
+                    <p class="text-xs mt-1 text-slate-500">Higher of Death Benefit or Accidental Death Benefit is paid. Exclusions apply.</p>
+                </div>
+                <div class="p-3 border rounded-lg bg-slate-50">
+                    <h3 class="text-lg font-semibold text-blue-600">Life Replacement Option (LRO)</h3>
+                    <p class="text-sm">Request to replace Life Assured up to 3 times, subject to conditions.</p>
+                </div>
+                <div class="p-3 border rounded-lg bg-slate-50">
+                    <h3 class="text-lg font-semibold text-blue-600">Free Partial Withdrawal Benefit</h3>
+                    <p class="text-sm">After first 2 Policy Years and during MIP (i.e., Years 3-10):
+                        <ul class="list-disc list-inside ml-4 text-sm">
+                            <li>Entitled to **2 free Partial Withdrawals** from Regular Premium Account without PWC.</li>
+                            <li>Each free withdrawal capped at **6%** of the Account Value of Regular Premium Account at time of exercise.</li>
+                            <li>Exercising this benefit suspends Power-up/Loyalty Bonus for 12 months.</li>
+                        </ul>
+                    </p>
+                </div>
+                <div class="p-3 border rounded-lg bg-slate-50">
+                    <h3 class="text-lg font-semibold text-blue-600">Maturity Benefit</h3>
+                    <p class="text-sm">At Policy Expiry Date (Age 99), pays 100% of Total Account Value, less outstanding charges.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="flexibility" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">6. Plan Flexibility (10-Year MIP)</h2>
+            <div class="space-y-3">
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Premium Payments</summary>
+                    <p class="text-sm mt-2">Min. Annual Regular Premium: S$6,000 / US$6,000. Monthly (S$500) for SGD only.</p>
+                    <p class="text-sm mt-1">- Regular Premium <strong class="text-red-600">cannot be increased</strong> after commencement.</p>
+                    <p class="text-sm mt-1">- Regular Premium <strong class="text-red-600">cannot be reduced during first 36 policy months (Years 1-3)</strong>.</p>
+                    <p class="text-sm mt-1">- From <strong class="text-green-600">37th Policy Month (Year 4 onwards)</strong>: Can apply to reduce Regular Premium (max 25% of original, BRC applies during MIP, Power-up Bonus suspended for 12 months). Cannot increase later.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Premium Holiday</summary>
+                    <p class="text-sm mt-2">Temporarily stop Regular Premiums.</p>
+                    <ul class="list-disc list-inside ml-4 text-sm space-y-1">
+                        <li><strong>First 36 Policy Months (Years 1-3):</strong> <strong class="text-red-600">Not allowed.</strong> Policy lapses if premium unpaid (EEC applies).</li>
+                        <li><strong>From 37th Policy Month to end of MIP (Years 4-10):</strong> Allowed, up to <strong class="text-green-600">Max. Premium Holiday Duration of 60 months</strong>.
+                            <ul class="list-circle list-inside ml-4">
+                                <li>Premium Holiday Charge (PHC) is <strong class="text-green-600">currently Nil</strong> but HSBC Life can impose it.</li>
+                                <li>Power-up Bonuses forfeited during holiday (can be reinstated if missed premiums are back-paid).</li>
+                            </ul>
+                        </li>
+                        <li><strong>After MIP (Year 11 onwards):</strong> <strong class="text-green-600">Unlimited Premium Holiday</strong> allowed, no PHC.</li>
+                    </ul>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Top-up Premiums & Recurring Single Premiums (RSP)</summary>
+                    <p class="text-sm mt-2">Allowed from <strong class="text-green-600">13th Policy Month</strong>, before Life Assured Age 70. Min. $100 (multiples of $10). Max RSP is 25% of prevailing Regular Premium (RSP not for USD). 3% premium charge. Allocated to Top-up Account. Not allowed during Premium Holiday.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Withdrawal of Units</summary>
+                    <p class="text-sm mt-2"><strong class="text-blue-700">Partial Withdrawal:</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-sm">
+                        <li>Allowed from <strong class="text-green-600">25th Policy Month (Year 3 onwards)</strong>.</li>
+                        <li>Min. amount $250 (multiples of $10).</li>
+                        <li>From Policy Year 6 to end of MIP, each withdrawal from Regular Premium Account capped at 50% of its prevailing value (including past withdrawals).</li>
+                        <li>Remaining Regular Premium Account value must be ≥ $3,600 (Minimum Holding Amount).</li>
+                        <li>Withdrawals from Regular Premium Account during MIP (Years 3-10) subject to PWC, unless it's a <strong class="text-green-600">Free Partial Withdrawal</strong> (2 allowed, each up to 6% of Regular Premium Account value).</li>
+                        <li>No PWC for Top-up Account withdrawals.</li>
+                        <li>Impacts Power-up/Loyalty Bonus eligibility for 12 months.</li>
+                    </ul>
+                    <p class="text-sm mt-2"><strong class="text-blue-700">Regular Withdrawal:</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-sm">
+                        <li>Allowed <strong class="text-green-600">after MIP (Year 11 onwards)</strong>. Min. annual S$1,200/US$1,200 (or S$100 monthly for SGD).</li>
+                        <li>Remaining Regular Premium Account value must meet Minimum Holding Amount.</li>
+                        <li>Impacts Loyalty Bonus eligibility for 12 months.</li>
+                    </ul>
+                     <p class="text-sm mt-2"><strong class="text-blue-700">Full Surrender:</strong> Possible anytime. EEC applies to Regular Premium Account if surrendered during MIP.</p>
+                </details>
+                 <details class="p-3 border rounded-lg hover:shadow-sm transition-shadow bg-slate-50">
+                    <summary>Switching & Dividends</summary>
+                    <p class="text-sm mt-2">- **Switching ILP Sub-Funds:** Allowed. Min. switch $1,000 per fund, min. remaining $1,000. Max 10 funds. No fee currently.</p>
+                    <p class="text-sm mt-1">- **Dividend Distribution:** For dividend-paying funds, option to reinvest (default) or cash payout (min S$30 total).</p>
+                </details>
+            </div>
+        </section>
+
+        <section id="suitability" class="mb-10 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 border-b-2 border-blue-100 pb-2">7. Suitability and Key Risks</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-600 mb-2">This Plan May Suit You If:</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>You are looking for a medium to long-term investment (10-year MIP).</li>
+                        <li>You want a blend of investment growth potential and life insurance.</li>
+                        <li>You are comfortable with investment risks.</li>
+                        <li>You can commit to regular premium payments (min. S$6,000/US$6,000 p.a.).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-red-600 mb-2">Key Risks to Consider:</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-red-700">
+                        <li><strong class="font-semibold">Investment Risk:</strong> Value of units can fall; principal loss is possible.</li>
+                        <li><strong class="font-semibold">Long-Term Commitment:</strong> Early termination (during 10-year MIP) is costly due to EEC/PWC.</li>
+                        <li><strong class="font-semibold">Fees & Charges:</strong> AMF, PWC, and fund charges are not guaranteed and can be revised.</li>
+                        <li><strong class="font-semibold">Bonus Conditions:</strong> Power-up and Loyalty bonuses are conditional.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-6 text-sm text-slate-600">Protected under Policy Owners’ Protection Scheme in Singapore. Always consult a financial advisor.</p>
+        </section>
+    </main>
+
+    <footer class="bg-blue-800 text-white text-center p-6 mt-8">
+        <p class="text-sm">&copy; <span id="currentYearAbundance"></span> HSBC Life Wealth Abundance - Interactive Guide. For illustrative purposes only.</p>
+        <p class="text-xs mt-1">Based on Product Summary dated July 2023. Refer to official documents from HSBC Life (Singapore) Pte. Ltd.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearAbundance').textContent = new Date().getFullYear();
+
+        document.querySelectorAll('header nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - (document.querySelector('header').offsetHeight + 10),
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        const eecDataAbundance = {
+            labels: ['Yr 1', 'Yr 2', 'Yr 3', 'Yr 4', 'Yr 5', 'Yr 6', 'Yr 7', 'Yr 8', 'Yr 9', 'Yr 10', 'Yr 11+'],
+            values: [100, 100, 80, 65, 50, 47, 44, 21, 16, 8, 0]
+        };
+
+        const pwcDataAbundance = {
+            labels: ['Yr 1', 'Yr 2', 'Yr 3', 'Yr 4', 'Yr 5', 'Yr 6', 'Yr 7', 'Yr 8', 'Yr 9', 'Yr 10', 'Yr 11+'],
+            // PWC applies Years 1-10. Free partial withdrawals from Yr 3.
+            // For simplicity, chart shows max PWC rate if not free.
+            values: [100, 100, 80, 60, 40, 8, 8, 8, 8, 8, 0]
+        };
+
+        let eecChartAbundanceInstance;
+        let pwcChartAbundanceInstance;
+
+        function createAbundanceCharts() {
+            const eecCtx = document.getElementById('eecChartAbundance').getContext('2d');
+            if (eecChartAbundanceInstance) eecChartAbundanceInstance.destroy();
+            eecChartAbundanceInstance = new Chart(eecCtx, {
+                type: 'line',
+                data: {
+                    labels: eecDataAbundance.labels,
+                    datasets: [{
+                        label: 'EEC Rate (10-Year MIP) (%)',
+                        data: eecDataAbundance.values,
+                        borderColor: '#DC2626', // red-600
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        tension: 0.1,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'EEC Rate (%)' } }, x: { title: { display: true, text: 'Policy Year' } } },
+                    plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.formattedValue}%` } } }
+                }
+            });
+
+            const pwcCtx = document.getElementById('pwcChartAbundance').getContext('2d');
+            if (pwcChartAbundanceInstance) pwcChartAbundanceInstance.destroy();
+            pwcChartAbundanceInstance = new Chart(pwcCtx, {
+                type: 'bar',
+                data: {
+                    labels: pwcDataAbundance.labels.slice(0,10), // Only show for MIP years
+                    datasets: [{
+                        label: 'PWC Rate (10-Year MIP) (%) - If not Free Withdrawal',
+                        data: pwcDataAbundance.values.slice(0,10),
+                        borderColor: '#F97316', // orange-500
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'PWC Rate (%)' } }, x: { title: { display: true, text: 'Policy Year of Withdrawal' } } },
+                    plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.formattedValue}%` } } }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createAbundanceCharts();
+        });
+    </script>
+</body>
+</html>

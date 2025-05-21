@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSBC Life Wealth Voyage - Simplified Visual Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Plan Timelines (15, 20, 25yr): HTML/Tailwind structured sections. Goal: Compare, Inform (static).
+        - Bonuses: Highly condensed bullet points for Start-up, Power-up, Loyalty. Goal: Inform.
+        - Key Fees: Simplified list of major fees (AMF, IMF, EEC, PWC). Goal: Inform.
+        - Flexibility Highlights: Key milestones for Premium Holiday, Partial Withdrawals. Goal: Inform.
+        - Account Flow: Brief mention of Regular Premium Account & Top-up Account. Goal: Inform.
+        - No charts or JS interactivity for simplicity and screenshot-friendliness.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; /* stone-50 */ color: #374151; /* stone-700 */ }
+        .plan-card { background-color: white; border: 1px solid #d1d5db; /* stone-300 */ border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        .plan-title { color: #0D9488; /* teal-600 */ border-bottom: 2px solid #CCFBF1; /* teal-100 */ padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        .section-title { color: #0F766E; /* teal-700 */ margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; }
+        .detail-item { margin-bottom: 0.25rem; font-size: 0.875rem; }
+        .detail-item strong { color: #047857; } /* green-700 for emphasis */
+        .fee-item strong { color: #B91C1C; } /* red-700 for fees */
+        .account-info-box { background-color: #F0F9FF; border: 1px solid #E0F2FE; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.875rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-700">HSBC Life Wealth Voyage</h1>
+            <p class="text-md md:text-lg text-stone-600">Simplified Visual Summary</p>
+        </header>
+
+        <div class="account-info-box text-center mb-8">
+            <p><strong class="text-teal-600">Account Basics:</strong> Regular Premiums initially go to the <strong class="text-teal-600">Regular Premium Account</strong> (which also receives bonuses). Top-ups go to the <strong class="text-green-600">Top-up Account</strong>.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+
+            <section class="plan-card">
+                <h2 class="text-xl font-bold plan-title text-center">15-Year MIP</h2>
+
+                <h3 class="section-title">Key Periods & Bonuses</h3>
+                <p class="detail-item"><strong>ICP (Yrs 1-2):</strong> Regular Premiums to Regular Premium Account.</p>
+                <p class="detail-item"><strong>Start-up Bonus (Yrs 1-2):</strong> Up to <strong>20% + 20%</strong> (based on ARP) of Regular Premium to Regular Premium Account.</p>
+                <p class="detail-item"><strong>Power-up Bonus (Yrs 6-15):</strong> <strong>0.20% p.a.</strong> of Regular Premium Account value (monthly).</p>
+                <p class="detail-item"><strong>Loyalty Bonus (Yr 16+):</strong> <strong>1.00% p.a.</strong> of Regular Premium Account value (monthly).</p>
+
+                <h3 class="section-title">Key Fees</h3>
+                <p class="detail-item fee-item"><strong>AMF:</strong> <strong>2.30% p.a.</strong> (during MIP, special calc. last 3 yrs), then 1.00% p.a. (on higher of initial/current ARP x lower of Policy Yr/MIP).</p>
+                <p class="detail-item fee-item"><strong>IMF:</strong> (Not explicitly stated for Wealth Voyage's Regular Premium Account, but applies to underlying funds).</p>
+                <p class="detail-item fee-item"><strong>EEC:</strong> Applies during MIP on Regular Premium Account (e.g., Yr 1: 100%, Yr 5: 47%, Yr 10: 22%, Yr 15: 5%).</p>
+                <p class="detail-item fee-item"><strong>PWC:</strong> During MIP on Regular Premium Account (e.g., Yr 3: 50%, Yr 9: 5%, Yr 15: 5%).</p>
+                <p class="detail-item fee-item"><strong>PHC:</strong> Applies during MIP after free period (e.g., Yr 3: 74%).</p>
+                <p class="detail-item fee-item"><strong>Top-up Premium Charge:</strong> 3%.</p>
+
+                <h3 class="section-title">Flexibility Highlights</h3>
+                <p class="detail-item"><strong>Premium Holiday:</strong> Not in Yrs 1-2. From Yr 3 (25th month): <strong>24 months free</strong>, then PHC applies during MIP. Unlimited after MIP.</p>
+                <p class="detail-item"><strong>Partial Withdrawal:</strong> From Yr 3 (25th month). PWC applies during MIP on Regular Premium Account. No PWC on Top-up Account or after MIP.</p>
+                <p class="detail-item"><strong>Premium Reduction:</strong> From Policy Year 5 (BRC applies during MIP).</p>
+            </section>
+
+            <section class="plan-card">
+                <h2 class="text-xl font-bold plan-title text-center">20-Year MIP</h2>
+
+                 <h3 class="section-title">Key Periods & Bonuses</h3>
+                <p class="detail-item"><strong>ICP (Yrs 1-2):</strong> Regular Premiums to Regular Premium Account.</p>
+                <p class="detail-item"><strong>Start-up Bonus (Yrs 1-2):</strong> Up to <strong>20%/40% + 25%/50%</strong> (based on ARP) of Regular Premium to Regular Premium Account.</p>
+                <p class="detail-item"><strong>Power-up Bonus (Yrs 3-20):</strong> Tiered: <strong>0.10% (Y3-5), 0.30% (Y6-10), 0.50% (Y11-15), 0.70% (Y16-20) p.a.</strong> of Regular Premium Account value (monthly).</p>
+                <p class="detail-item"><strong>Loyalty Bonus (Yr 21+):</strong> <strong>1.10% p.a.</strong> of Regular Premium Account value (monthly).</p>
+
+                <h3 class="section-title">Key Fees</h3>
+                <p class="detail-item fee-item"><strong>AMF:</strong> <strong>2.15% p.a.</strong> (during MIP, special calc. last 4 yrs), then 1.00% p.a. (on higher of initial/current ARP x lower of Policy Yr/MIP).</p>
+                <p class="detail-item fee-item"><strong>IMF:</strong> (Applies to underlying funds).</p>
+                <p class="detail-item fee-item"><strong>EEC:</strong> Applies during MIP on Regular Premium Account (e.g., Yr 1: 100%, Yr 5: 56%, Yr 10: 28%, Yr 20: 3%).</p>
+                <p class="detail-item fee-item"><strong>PWC:</strong> During MIP on Regular Premium Account (e.g., Yr 3: 50%, Yr 10: 10%, Yr 20: 5%).</p>
+                <p class="detail-item fee-item"><strong>PHC:</strong> Applies during MIP after free period (e.g., Yr 3: 98%).</p>
+                <p class="detail-item fee-item"><strong>Top-up Premium Charge:</strong> 3%.</p>
+
+                <h3 class="section-title">Flexibility Highlights</h3>
+                <p class="detail-item"><strong>Premium Holiday:</strong> Not in Yrs 1-2. From Yr 3 (25th month): <strong>24 months free</strong>, then PHC applies during MIP. Unlimited after MIP.</p>
+                <p class="detail-item"><strong>Partial Withdrawal:</strong> From Yr 3 (25th month). PWC applies during MIP on Regular Premium Account. No PWC on Top-up Account or after MIP.</p>
+                <p class="detail-item"><strong>Premium Reduction:</strong> From Policy Year 8 (BRC applies during MIP).</p>
+            </section>
+
+            <section class="plan-card">
+                <h2 class="text-xl font-bold plan-title text-center">25-Year MIP</h2>
+
+                <h3 class="section-title">Key Periods & Bonuses</h3>
+                <p class="detail-item"><strong>ICP (Yrs 1-2):</strong> Regular Premiums to Regular Premium Account.</p>
+                <p class="detail-item"><strong>Start-up Bonus (Yrs 1-2):</strong> Up to <strong>25%/30% + 45%/50%</strong> (based on ARP) of Regular Premium to Regular Premium Account.</p>
+                <p class="detail-item"><strong>Power-up Bonus (Yrs 3-25):</strong> Tiered: <strong>0.10% (Y3-5), 0.40% (Y6-10), 0.70% (Y11-15), 0.80% (Y16-20), 1.00% (Y21-25) p.a.</strong> of Regular Premium Account value (monthly).</p>
+                <p class="detail-item"><strong>Loyalty Bonus (Yr 26+):</strong> <strong>1.20% p.a.</strong> of Regular Premium Account value (monthly).</p>
+
+                <h3 class="section-title">Key Fees</h3>
+                <p class="detail-item fee-item"><strong>AMF:</strong> <strong>2.15% p.a.</strong> (during MIP, special calc. last 6 yrs), then 1.00% p.a. (on higher of initial/current ARP x lower of Policy Yr/MIP).</p>
+                <p class="detail-item fee-item"><strong>IMF:</strong> (Applies to underlying funds).</p>
+                <p class="detail-item fee-item"><strong>EEC:</strong> Applies during MIP on Regular Premium Account (e.g., Yr 1: 100%, Yr 5: 67%, Yr 10: 39%, Yr 25: 5%).</p>
+                <p class="detail-item fee-item"><strong>PWC:</strong> During MIP on Regular Premium Account (e.g., Yr 3: 50%, Yr 10: 10%, Yr 25: 5%).</p>
+                <p class="detail-item fee-item"><strong>PHC:</strong> Applies during MIP after free period (e.g., Yr 3: 85%).</p>
+                <p class="detail-item fee-item"><strong>Top-up Premium Charge:</strong> 3%.</p>
+
+                <h3 class="section-title">Flexibility Highlights</h3>
+                <p class="detail-item"><strong>Premium Holiday:</strong> Not in Yrs 1-2. From Yr 3 (25th month): <strong>24 months free</strong>, then PHC applies during MIP. Unlimited after MIP.</p>
+                <p class="detail-item"><strong>Partial Withdrawal:</strong> From Yr 3 (25th month). PWC applies during MIP on Regular Premium Account. No PWC on Top-up Account or after MIP.</p>
+                <p class="detail-item"><strong>Premium Reduction:</strong> From Policy Year 10 (BRC applies during MIP).</p>
+            </section>
+        </div>
+
+        <footer class="text-center mt-10 pt-6 border-t border-stone-300">
+            <p class="text-xs text-stone-500">This visual summary is for illustrative purposes and based on the HSBC Life Wealth Voyage Product Summary (Version 4.3, Nov 2024). Investment involves risks. Terms and conditions apply. Consult a financial advisor and official documents.</p>
+        </footer>
+    </div>
+</body>
+</html>

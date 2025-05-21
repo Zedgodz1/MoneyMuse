@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSBC Life Wealth Accelerate - Visual Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Plan Timelines (25yr & 30yr): HTML/Tailwind structured sections. Goal: Compare, Inform.
+        - Bonuses: Bullet points with rates. Goal: Inform.
+        - Key Fees: Simplified list. Goal: Inform.
+        - Flexibility Milestones: Key years for withdrawals/premium holiday. Goal: Inform.
+        - Account Flow (IUA/AUA): Brief mention. Goal: Inform.
+        - No charts in this version to maintain simplicity for a static image.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fdfcfb; /* Light warm neutral */ }
+        .timeline-block { border-left: 3px solid #0D9488; /* Teal accent */ padding-left: 1rem; margin-bottom: 1rem; }
+        .timeline-block h4 { color: #0F766E; /* Darker Teal */ }
+        .highlight-box { background-color: #F0FDF4; border: 1px solid #A7F3D0; padding: 0.75rem; border-radius: 0.375rem; margin-bottom: 0.75rem; }
+        .fee-item { background-color: #FFFBEB; border: 1px solid #FEF3C7; padding: 0.5rem; border-radius: 0.375rem; }
+        .bonus-item strong { color: #059669; } /* Green for bonuses */
+        .flexibility-item strong { color: #0284C7; } /* Blue for flexibility */
+        .account-info { background-color: #EFF6FF; border: 1px solid #BFDBFE; padding: 0.5rem; border-radius: 0.375rem; }
+    </style>
+</head>
+<body class="text-stone-800">
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-teal-700">HSBC Life Wealth Accelerate</h1>
+            <p class="text-lg text-stone-600">Visual Summary of Key Features</p>
+        </header>
+
+        <div class="text-center mb-6">
+            <p class="text-sm text-stone-500">This is a simplified overview. For full details, please refer to the official Product Summary.</p>
+            <p class="text-sm text-stone-500">Premiums go to <span class="font-semibold text-teal-600">IUA</span> during ICP, then to <span class="font-semibold text-green-600">AUA</span>. Bonuses are credited as shown.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+
+            <section class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center border-b-2 border-teal-200 pb-3">25-Year Minimum Investment Period (MIP)</h2>
+
+                <div class="mb-4 account-info">
+                    <p class="font-semibold">Initial Contribution Period (ICP): Years 1-4</p>
+                    <p class="text-xs">Regular Premiums & Start-up Bonuses go to IUA.</p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Years 1-4 (ICP)</h4>
+                    <div class="highlight-box bonus-item">
+                        <p class="font-medium">Start-up Bonus (to IUA):</p>
+                        <ul class="list-disc list-inside text-sm pl-4">
+                            <li>Year 1: <strong>25%</strong> of Regular Premium</li>
+                            <li>Years 2-4: <strong>40%</strong>/year of Regular Premium</li>
+                            <li>(Total: 145% of 1 annual premium)</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm flexibility-item">Premium Holiday: <strong>Not Allowed</strong></p>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (from AUA, if funded by top-ups): <strong>7% PWC</strong></p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Years 5-14</h4>
+                     <div class="account-info text-xs mb-2">
+                        <p>Regular Premiums now go to AUA.</p>
+                    </div>
+                    <p class="text-sm flexibility-item">Premium Holiday: <strong>Allowed</strong> (up to 84 months in MIP)</p>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (from AUA): Up to <strong>2 Free</strong> (then 7% PWC). *Impacts Power-up Bonus eligibility.*</p>
+                    <p class="text-sm flexibility-item">Premium Reduction: <strong>Allowed</strong> (BRC applies). *Impacts Power-up Bonus.*</p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Years 15-25 (End of MIP)</h4>
+                    <div class="highlight-box bonus-item">
+                        <p class="font-medium">Power-up Bonus (to AUA, monthly):</p>
+                        <ul class="list-disc list-inside text-sm pl-4">
+                            <li><strong>1.00% - 1.05% p.a.</strong> of Total Account Value</li>
+                            <li>(Rate depends on premium tier)</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (from AUA): Additional free withdrawals available (total 5 by Year 25). Then 7% PWC. *Impacts Power-up Bonus.*</p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Year 26 Onwards (Post-MIP)</h4>
+                     <div class="highlight-box bonus-item">
+                        <p class="font-medium">Loyalty Bonus (to AUA, monthly):</p>
+                        <ul class="list-disc list-inside text-sm pl-4">
+                            <li><strong>0.90% p.a.</strong> of Total Account Value</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (IUA or AUA): <strong>No PWC</strong>. *Impacts Loyalty Bonus.*</p>
+                    <p class="text-sm flexibility-item">Premium Holiday: <strong>Unlimited</strong></p>
+                </div>
+
+                <div class="mt-6">
+                    <h4 class="text-md font-semibold text-red-600 mb-2">Key Ongoing Fees:</h4>
+                    <ul class="space-y-1 text-sm">
+                        <li class="fee-item"><strong>Account Maintenance Fee (AMF):</strong> 3.4% p.a. of IUA value (During MIP only)</li>
+                        <li class="fee-item"><strong>Investment Management Fee (IMF):</strong> 1.0% p.a. of AUA value (Throughout policy)</li>
+                        <li class="fee-item"><strong>Fund Management Charges:</strong> Varies by fund (Implicit)</li>
+                        <li class="fee-item"><strong>Early Encashment Charge (EEC):</strong> On IUA if surrendered during MIP (reduces yearly, 8% in Yr 25)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center border-b-2 border-teal-200 pb-3">30-Year Minimum Investment Period (MIP)</h2>
+
+                <div class="mb-4 account-info">
+                    <p class="font-semibold">Initial Contribution Period (ICP): Years 1-5</p>
+                    <p class="text-xs">Regular Premiums & Start-up Bonuses go to IUA.</p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Years 1-5 (ICP)</h4>
+                    <div class="highlight-box bonus-item">
+                        <p class="font-medium">Start-up Bonus (to IUA):</p>
+                        <ul class="list-disc list-inside text-sm pl-4">
+                            <li>Year 1: <strong>30%</strong> of Regular Premium</li>
+                            <li>Years 2-4: <strong>40%</strong>/year of Regular Premium</li>
+                            <li>Year 5: <strong>50%</strong> of Regular Premium</li>
+                            <li>(Total: 200% of 1 annual premium)</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm flexibility-item">Premium Holiday: <strong>Not Allowed</strong></p>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (from AUA, if funded by top-ups): <strong>7% PWC</strong></p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Years 6-14</h4>
+                    <div class="account-info text-xs mb-2">
+                        <p>Regular Premiums now go to AUA.</p>
+                    </div>
+                    <p class="text-sm flexibility-item">Premium Holiday: <strong>Allowed</strong> (up to 84 months in MIP)</p>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (from AUA): Up to <strong>2 Free</strong> (then 7% PWC). *Impacts Power-up Bonus eligibility.*</p>
+                    <p class="text-sm flexibility-item">Premium Reduction: <strong>Allowed</strong> (BRC applies). *Impacts Power-up Bonus.*</p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Years 15-30 (End of MIP)</h4>
+                    <div class="highlight-box bonus-item">
+                        <p class="font-medium">Power-up Bonus (to AUA, monthly):</p>
+                        <ul class="list-disc list-inside text-sm pl-4">
+                            <li><strong>1.25% - 1.30% p.a.</strong> of Total Account Value</li>
+                            <li>(Rate depends on premium tier)</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (from AUA): Additional free withdrawals available (total 7 by Year 30). Then 7% PWC. *Impacts Power-up Bonus.*</p>
+                </div>
+
+                <div class="timeline-block">
+                    <h4 class="text-lg font-semibold mb-1">Year 31 Onwards (Post-MIP)</h4>
+                    <div class="highlight-box bonus-item">
+                        <p class="font-medium">Loyalty Bonus (to AUA, monthly):</p>
+                        <ul class="list-disc list-inside text-sm pl-4">
+                            <li><strong>1.10% p.a.</strong> of Total Account Value</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm flexibility-item">Partial Withdrawal (IUA or AUA): <strong>No PWC</strong>. *Impacts Loyalty Bonus.*</p>
+                    <p class="text-sm flexibility-item">Premium Holiday: <strong>Unlimited</strong></p>
+                </div>
+
+                <div class="mt-6">
+                    <h4 class="text-md font-semibold text-red-600 mb-2">Key Ongoing Fees:</h4>
+                    <ul class="space-y-1 text-sm">
+                        <li class="fee-item"><strong>Account Maintenance Fee (AMF):</strong> 3.4% p.a. of IUA value (During MIP only)</li>
+                        <li class="fee-item"><strong>Investment Management Fee (IMF):</strong> 1.0% p.a. of AUA value (Throughout policy)</li>
+                        <li class="fee-item"><strong>Fund Management Charges:</strong> Varies by fund (Implicit)</li>
+                        <li class="fee-item"><strong>Early Encashment Charge (EEC):</strong> On IUA if surrendered during MIP (reduces yearly, 8% in Yr 30)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <footer class="text-center mt-10 pt-6 border-t border-stone-300">
+            <p class="text-xs text-stone-500">This visual summary is for illustrative purposes and based on the HSBC Life Wealth Accelerate Product Summary (Ver 2.0). Investment involves risks. The value of units can fall as well as rise. Buying a life insurance policy is a long-term commitment. An early termination usually involves high costs and the surrender value payable may be less than total premiums paid. Please consult a financial advisor and refer to official documents for complete details.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSBC Life Wealth Abundance - Simplified Visual Summary (10-Year MIP)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Plan Timeline (10yr): HTML/Tailwind structured sections. Goal: Inform (static).
+        - Bonuses: Highly condensed bullet points. Goal: Inform.
+        - Key Fees: Simplified list. Goal: Inform.
+        - Flexibility Highlights: Key milestones. Goal: Inform.
+        - Account Flow: Brief mention. Goal: Inform.
+        - No charts or JS for screenshot-friendliness.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fffbeb; color: #334155; }
+        .plan-card { background-color: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); max-width: 800px; margin: 2rem auto; }
+        .plan-title { color: #1D4ED8; border-bottom: 2px solid #DBEAFE; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        .section-title { color: #1E3A8A; margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; font-size: 1.125rem; }
+        .detail-item { margin-bottom: 0.25rem; font-size: 0.9rem; }
+        .detail-item strong { color: #166534; } /* Dark Green for emphasis */
+        .fee-item strong { color: #991B1B; } /* Dark Red for fees */
+        .account-info-box { background-color: #EFF6FF; border: 1px solid #DBEAFE; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.875rem; }
+        .timeline-segment { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed #9ca3af; }
+        .timeline-segment:last-child { border-bottom: none; }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-6 lg:p-8">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-700">HSBC Life Wealth Abundance</h1>
+            <p class="text-md md:text-lg text-slate-600">Simplified Visual Summary (10-Year MIP)</p>
+        </header>
+
+        <section class="plan-card">
+            <h2 class="text-2xl font-bold plan-title text-center">10-Year Minimum Investment Period (MIP)</h2>
+
+            <div class="account-info-box text-center mb-6">
+                <p><strong class="text-blue-600">Account Basics:</strong> Regular Premiums to <strong class="text-blue-600">Regular Premium Account</strong> (also receives bonuses). Top-ups/RSPs to <strong class="text-green-600">Top-up Account</strong>.</p>
+            </div>
+
+            <div class="timeline-segment">
+                <h3 class="section-title">Policy Year 1</h3>
+                <p class="detail-item"><strong>Start-up Bonus:</strong> One-time bonus of <strong>8% - 12%</strong> of 1st year Regular Premium (based on premium amount), to Regular Premium Account.</p>
+                <p class="detail-item">Flexibility: Premium Holiday/Reduction <strong class="text-red-700">not allowed</strong>. Partial Withdrawal <strong class="text-red-700">not allowed</strong>.</p>
+                <p class="detail-item fee-item">EEC: 100%. PWC: 100% (if withdrawal were possible).</p>
+            </div>
+
+            <div class="timeline-segment">
+                <h3 class="section-title">Policy Years 2 - 3</h3>
+                <p class="detail-item">Year 2: Premium Holiday/Reduction/Partial Withdrawal <strong class="text-red-700">not allowed</strong>.</p>
+                <p class="detail-item">Year 3 (from 25th policy month):</p>
+                <ul class="list-disc list-inside ml-4 text-sm">
+                    <li>Partial Withdrawal: <strong class="text-green-600">Allowed</strong> from Regular Premium Account (PWC applies, e.g., 80% in Yr 3, unless Free Partial Withdrawal). Min. $250.</li>
+                    <li>Free Partial Withdrawal Benefit: <strong class="text-green-600">2 free withdrawals</strong> (each up to 6% of Regular Premium Account value) available during Yrs 3-10.</li>
+                </ul>
+                 <p class="detail-item">Year 3 (from 37th policy month):</p>
+                 <ul class="list-disc list-inside ml-4 text-sm">
+                    <li>Premium Reduction: <strong class="text-green-600">Allowed</strong> (BRC applies).</li>
+                    <li>Premium Holiday: <strong class="text-green-600">Allowed</strong> (max 60 months in MIP, PHC currently Nil).</li>
+                 </ul>
+                <p class="detail-item fee-item">EEC: Yr 2: 100%, Yr 3: 80%. PWC: Yr 2: 100%, Yr 3: 80%.</p>
+            </div>
+
+            <div class="timeline-segment">
+                <h3 class="section-title">Policy Years 5 - 10 (End of MIP)</h3>
+                <p class="detail-item"><strong>Power-up Bonus (Yrs 5-10):</strong> <strong>0.1% p.a.</strong> of Regular Premium Account value, paid monthly to Regular Premium Account.</p>
+                <p class="detail-item">Flexibility: Premium Holiday, Partial Withdrawal (PWC applies, e.g. 8% Yrs 6-10, or Free), Premium Reduction (BRC applies) continue to be available under their respective rules.</p>
+                <p class="detail-item fee-item">EEC: Reduces annually (e.g., Yr 5: 50%, Yr 10: 8%).</p>
+                <p class="detail-item fee-item">PWC: Reduces then stabilizes (e.g., Yr 5: 40%, Yrs 6-10: 8%).</p>
+            </div>
+
+            <div class="timeline-segment">
+                <h3 class="section-title">Policy Year 11 Onwards (Post-MIP)</h3>
+                <p class="detail-item"><strong>Loyalty Bonus:</strong> <strong>0.3% p.a.</strong> of Regular Premium Account value, paid monthly to Regular Premium Account.</p>
+                <p class="detail-item">Flexibility:</p>
+                <ul class="list-disc list-inside ml-4 text-sm">
+                    <li>Premium Holiday: <strong class="text-green-600">Unlimited</strong>.</li>
+                    <li>Partial/Regular Withdrawal: <strong class="text-green-600">Allowed</strong> from Regular Premium or Top-up Account. <strong class="text-green-600">No PWC</strong>.</li>
+                </ul>
+                <p class="detail-item fee-item">EEC: 0%. AMF reduces to 0.60% p.a.</p>
+            </div>
+
+            <div>
+                <h3 class="section-title">Key Ongoing Fees (Summary)</h3>
+                <p class="detail-item fee-item"><strong>Account Maintenance Fee (AMF):</strong> <strong>2.10% p.a.</strong> (during MIP) / <strong>0.60% p.a.</strong> (after MIP) on Regular Premium Account value.</p>
+                <p class="detail-item fee-item"><strong>Premium Charge (Top-ups/RSP):</strong> <strong>3%</strong>.</p>
+                <p class="detail-item fee-item"><strong>Fund Management Charges:</strong> Vary by fund (implicit in unit price).</p>
+                <p class="text-xs mt-3 text-slate-500">Note: Power-up/Loyalty bonuses can be suspended for 12 months due to withdrawals, premium holidays, or premium reductions as per policy terms.</p>
+            </div>
+        </section>
+
+        <footer class="text-center mt-8 pt-4 border-t border-slate-300">
+            <p class="text-xs text-slate-500">This visual summary is for illustrative purposes and based on the HSBC Life Wealth Abundance Product Summary (July 2023). Investment involves risks. Terms and conditions apply. Consult a financial advisor and official documents.</p>
+        </footer>
+    </div>
+</body>
+</html>
