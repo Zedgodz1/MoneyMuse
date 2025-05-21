@@ -1,2 +1,616 @@
 # MoneyMuse
-Good Financial Plans
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSBC Life Wealth Accelerate - Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Product Overview: Textual summary. Goal: Inform.
+        - Account Mechanics (IUA/AUA): Textual explanation. Goal: Inform.
+        - Bonuses (Start-up, Power-up, Loyalty): Tables for rates, conditions. Goal: Inform, Compare. Interaction: Toggle between 25/30yr MIP views. Library: Vanilla JS for toggle.
+        - Fees (AMF, IMF, EEC, PWC, BRC): Detailed list/table. Goal: Inform. Interaction: EEC rates will be a Chart.js line chart showing percentage decrease over policy years for both MIPs. Library: Chart.js.
+        - Benefits (Death, TI, Life Replacement): Textual explanation. Goal: Inform.
+        - Flexibility (Partial Withdrawal, Premium Holiday, Premium Reduction): Textual explanation with rules, conditions for 25/30yr MIPs. Goal: Inform, Compare. Interaction: Toggle for MIP-specific rules on withdrawals. Library: Vanilla JS for toggle.
+        - Suitability/Risks: Bullet points. Goal: Inform.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-button.active { background-color: #0D9488; color: white; }
+        .tab-button { background-color: #F0FDF4; color: #0D9488; border: 1px solid #0D9488; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #0D9488; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0F766E; }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800 antialiased">
+
+    <header class="bg-teal-700 text-white p-6 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl font-bold">HSBC Life Wealth Accelerate</h1>
+            <nav class="mt-4 md:mt-0">
+                <ul class="flex space-x-4 md:space-x-6">
+                    <li><a href="#overview" class="hover:text-teal-200 transition duration-300">Overview</a></li>
+                    <li><a href="#accounts" class="hover:text-teal-200 transition duration-300">Accounts</a></li>
+                    <li><a href="#bonuses" class="hover:text-teal-200 transition duration-300">Bonuses</a></li>
+                    <li><a href="#fees" class="hover:text-teal-200 transition duration-300">Fees</a></li>
+                    <li><a href="#benefits" class="hover:text-teal-200 transition duration-300">Benefits</a></li>
+                    <li><a href="#flexibility" class="hover:text-teal-200 transition duration-300">Flexibility</a></li>
+                    <li><a href="#suitability" class="hover:text-teal-200 transition duration-300">Is it for You?</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <div class="mb-8 p-4 bg-white rounded-lg shadow">
+            <h2 class="text-xl font-semibold text-teal-700 mb-3">Select Minimum Investment Period (MIP) to View Details:</h2>
+            <div class="flex space-x-4">
+                <button id="mip25Btn" class="tab-button py-2 px-4 rounded-md font-medium focus:outline-none active">25 Years</button>
+                <button id="mip30Btn" class="tab-button py-2 px-4 rounded-md font-medium focus:outline-none">30 Years</button>
+            </div>
+        </div>
+
+        <section id="overview" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">1. Overview: What is HSBC Life Wealth Accelerate?</h2>
+            <p class="mb-3">HSBC Life Wealth Accelerate is a whole life, regular premium Investment-Linked Plan (ILP). This means it's a financial product that combines life insurance protection with investment opportunities, aiming to grow your wealth over the long term.</p>
+            <p class="mb-3">You commit to paying regular premiums for a chosen Minimum Investment Period (MIP), which can be either 25 years or 30 years. You can also choose to pay your premiums in SGD or USD (though monthly USD payments are not allowed).</p>
+            <p class="mb-3">A key feature is that it's a <strong class="text-teal-600">Guaranteed Issuance Offer</strong>, meaning acceptance is generally guaranteed without medical underwriting, making it accessible.</p>
+            <p>The plan is designed to reward long-term commitment through various bonuses while providing flexibility and protection. However, like all investments, it carries risks, and the value of your investment can go up or down.</p>
+        </section>
+
+        <section id="accounts" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">2. How Your Money Works: IUA & AUA</h2>
+            <p class="mb-4">This plan uses two main accounts to manage your premiums and investments. Understanding these is key to seeing how your money grows and how fees are applied.</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                    <h3 class="text-xl font-semibold text-teal-700 mb-2">Initial Units Account (IUA)</h3>
+                    <p class="mb-2">Think of this as your "starting pot."</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Your <strong class="text-teal-600">Regular Premiums</strong> go into the IUA during the Initial Contribution Period (ICP).</li>
+                        <li class="mip-specific" data-mip="25">For a 25-year MIP, the ICP is the <strong class="text-teal-600">first 4 years</strong> (48 months).</li>
+                        <li class="mip-specific" data-mip="30" style="display:none;">For a 30-year MIP, the ICP is the <strong class="text-teal-600">first 5 years</strong> (60 months).</li>
+                        <li>All <strong class="text-teal-600">Start-up Bonuses</strong> are credited here.</li>
+                        <li>The <strong class="text-teal-600">Account Maintenance Fee (AMF)</strong> is charged on the value of this account during the MIP.</li>
+                        <li>If you surrender the policy early (during MIP), the <strong class="text-teal-600">Early Encashment Charge (EEC)</strong> is based on the IUA value.</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h3 class="text-xl font-semibold text-green-700 mb-2">Accumulation Units Account (AUA)</h3>
+                    <p class="mb-2">This is your "growth pot" for the longer term.</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Your <strong class="text-green-600">Regular Premiums</strong> go into the AUA *after* the Initial Contribution Period (ICP) ends.</li>
+                        <li>Any <strong class="text-green-600">Top-up Premiums</strong> or <strong class="text-green-600">Recurring Single Premiums (RSP)</strong> you make go directly here.</li>
+                        <li><strong class="text-green-600">Power-up Bonuses</strong> and <strong class="text-green-600">Loyalty Bonuses</strong> are credited here.</li>
+                        <li>The <strong class="text-green-600">Investment Management Fee (IMF)</strong> is charged on the value of this account.</li>
+                        <li><strong class="text-green-600">Partial Withdrawals</strong> are typically made from the AUA.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-4 text-sm text-gray-600">Both accounts hold units in the ILP Sub-Funds you choose to invest in. The value of these units can rise and fall based on market performance.</p>
+        </section>
+
+        <section id="bonuses" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">3. Supercharge Your Growth: Bonuses</h2>
+            <p class="mb-4">HSBC Life Wealth Accelerate offers several bonuses designed to boost your investment value over time. These are credited as additional units into your policy.</p>
+
+            <div class="space-y-6">
+                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Start-up Bonus</h3>
+                    <p class="text-sm mb-2">Get a head start! This bonus is paid on each Regular Premium received during the first few years of your policy and is credited to your IUA.</p>
+                    <div class="mip-specific" data-mip="25">
+                        <p class="font-medium">For 25-Year MIP:</p>
+                        <ul class="list-disc list-inside text-sm ml-4">
+                            <li>Year 1: <strong class="text-teal-700">25%</strong> of Regular Premium</li>
+                            <li>Years 2-4: <strong class="text-teal-700">40%</strong> of Regular Premium each year</li>
+                            <li>Total Start-up Bonus: <strong class="text-teal-700">145%</strong> of one annual Regular Premium</li>
+                        </ul>
+                    </div>
+                    <div class="mip-specific" data-mip="30" style="display:none;">
+                        <p class="font-medium">For 30-Year MIP:</p>
+                        <ul class="list-disc list-inside text-sm ml-4">
+                            <li>Year 1: <strong class="text-teal-700">30%</strong> of Regular Premium</li>
+                            <li>Years 2-4: <strong class="text-teal-700">40%</strong> of Regular Premium each year</li>
+                            <li>Year 5: <strong class="text-teal-700">50%</strong> of Regular Premium</li>
+                            <li>Total Start-up Bonus: <strong class="text-teal-700">200%</strong> of one annual Regular Premium</li>
+                        </ul>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-500">Note: Start-up Bonus may not be payable in certain situations like early death by suicide, non-accidental death/terminal illness within 18 months of policy start/reinstatement, or policy cancellation during the free-look period.</p>
+                </div>
+
+                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Power-up Bonus</h3>
+                    <p class="text-sm mb-2">A reward for staying invested! This bonus is paid monthly starting from the first policy month of Policy Year 15 until the end of your MIP. It's calculated on your prevailing Total Account Value and credited to your AUA.</p>
+                    <div class="mip-specific" data-mip="25">
+                        <p class="font-medium">For 25-Year MIP (Years 15-25):</p>
+                        <ul class="list-disc list-inside text-sm ml-4">
+                            <li>Annual Premium < S$9,600/US$6,720: <strong class="text-teal-700">1.00% p.a.</strong></li>
+                            <li>Annual Premium ≥ S$9,600/US$6,720: <strong class="text-teal-700">1.05% p.a.</strong></li>
+                        </ul>
+                    </div>
+                    <div class="mip-specific" data-mip="30" style="display:none;">
+                        <p class="font-medium">For 30-Year MIP (Years 15-30):</p>
+                        <ul class="list-disc list-inside text-sm ml-4">
+                            <li>Annual Premium < S$9,600/US$6,720: <strong class="text-teal-700">1.25% p.a.</strong></li>
+                            <li>Annual Premium ≥ S$9,600/US$6,720: <strong class="text-teal-700">1.30% p.a.</strong></li>
+                        </ul>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-500">Eligibility: Power-up Bonus may be suspended for 12 months if you make a Partial Withdrawal from AUA, take a Premium Holiday, or reduce your Regular Premium.</p>
+                </div>
+
+                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Loyalty Bonus</h3>
+                    <p class="text-sm mb-2">Thank you for your long-term commitment! This bonus is paid monthly *after* your MIP ends, for the rest of your policy term. It's calculated on your prevailing Total Account Value and credited to your AUA.</p>
+                    <div class="mip-specific" data-mip="25">
+                        <p class="font-medium">After 25-Year MIP (From Year 26 onwards):</p>
+                        <p class="text-sm ml-4"><strong class="text-teal-700">0.90% p.a.</strong></p>
+                    </div>
+                    <div class="mip-specific" data-mip="30" style="display:none;">
+                        <p class="font-medium">After 30-Year MIP (From Year 31 onwards):</p>
+                        <p class="text-sm ml-4"><strong class="text-teal-700">1.10% p.a.</strong></p>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-500">Eligibility: Loyalty Bonus may be suspended for 12 months if you make a Partial Withdrawal.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fees" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">4. Understanding the Costs: Fees & Charges</h2>
+            <p class="mb-4">It's important to be aware of the fees and charges associated with this plan, as they will affect your overall returns. These rates are guaranteed unless stated otherwise.</p>
+            <div class="space-y-4">
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Account Maintenance Fee (AMF)</summary>
+                    <p class="text-sm mt-2">Charged monthly from your <strong class="text-teal-600">IUA</strong> during the MIP.</p>
+                    <p class="text-sm">Rate: <strong class="text-red-600">3.4% per annum</strong> of the IUA value.</p>
+                    <p class="text-sm">This fee <strong class="text-green-600">stops after the MIP</strong>.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Investment Management Fee (IMF)</summary>
+                    <p class="text-sm mt-2">Charged monthly from your <strong class="text-green-600">AUA</strong> throughout the policy term.</p>
+                    <p class="text-sm">Rate: <strong class="text-red-600">1.0% per annum</strong> of the AUA value.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Early Encashment Charge (EEC)</summary>
+                    <p class="text-sm mt-2">Applies if you surrender the policy or if it lapses due to unpaid premiums during the ICP, or if the premium holiday period is exceeded during MIP and premiums remain unpaid. This charge is a percentage of your <strong class="text-teal-600">IUA</strong> value.</p>
+                    <p class="text-sm mb-2">The EEC rate reduces each year. For example:</p>
+                    <ul class="list-disc list-inside text-sm ml-4 mip-specific" data-mip="25">
+                        <li>Year 1: 100%</li>
+                        <li>Year 5: 91%</li>
+                        <li>Year 10: 82%</li>
+                        <li>Year 15: 56%</li>
+                        <li>Year 20: 23%</li>
+                        <li>Year 25: 8%</li>
+                        <li>Year 26 onwards: 0%</li>
+                    </ul>
+                    <ul class="list-disc list-inside text-sm ml-4 mip-specific" data-mip="30" style="display:none;">
+                        <li>Year 1: 100%</li>
+                        <li>Year 5: 96%</li>
+                        <li>Year 10: 91%</li>
+                        <li>Year 15: 58%</li>
+                        <li>Year 20: 24%</li>
+                        <li>Year 25: 17%</li>
+                        <li>Year 30: 8%</li>
+                        <li>Year 31 onwards: 0%</li>
+                    </ul>
+                    <div class="chart-container mt-4">
+                        <canvas id="eecChart"></canvas>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-500">Refer to Appendix A of the Product Summary for the full EEC rate table.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Partial Withdrawal Charge (PWC)</summary>
+                    <p class="text-sm mt-2">Applies to each partial withdrawal made from the <strong class="text-green-600">AUA</strong> during the MIP, unless it's a Free Partial Withdrawal.</p>
+                    <p class="text-sm">Rate: <strong class="text-red-600">7%</strong> of the partial withdrawal amount.</p>
+                    <p class="text-sm">No PWC applies for withdrawals made <strong class="text-green-600">after the end of the MIP</strong>.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Bonus Recovery Charge (BRC)</summary>
+                    <p class="text-sm mt-2">Imposed if you reduce your Regular Premium amount during the MIP. This charge is to recover a portion of the Start-up Bonus you received.</p>
+                    <p class="text-sm">It's deducted from the <strong class="text-teal-600">IUA</strong> when the reduced premium takes effect.</p>
+                    <p class="text-sm">Formula: `Start-up Bonus received x (1 - (Number of months passed since policy inception / Committed MIP in months)) x % of Premium reduction`</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Fund Management Charges</summary>
+                    <p class="text-sm mt-2">These are charged by the respective fund managers of the ILP Sub-Funds you choose. They are not directly deducted from your policy but are reflected in the unit price of the funds. These charges vary from fund to fund and are not guaranteed.</p>
+                </details>
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Switching Fee & Redemption Fee</summary>
+                    <p class="text-sm mt-2">Currently <strong class="text-green-600">waived</strong> by HSBC Life. However, they reserve the right to impose these fees in the future.</p>
+                </details>
+            </div>
+        </section>
+
+        <section id="benefits" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">5. Your Safety Net: Policy Benefits</h2>
+            <p class="mb-4">Beyond investment growth, this plan provides important insurance protection.</p>
+            <div class="space-y-4">
+                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Death Benefit</h3>
+                    <p class="text-sm mb-1">If the Life Assured passes away while the policy is in force (excluding suicide within the first year or first year of reinstatement), the following will be paid:</p>
+                    <ul class="list-disc list-inside text-sm ml-4 space-y-1">
+                        <li><strong>Death before Policy Anniversary nearest to Life Assured's 66th birthday:</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li>101% of (Total Account Value)</li>
+                                <li>PLUS 15% of (Total Account Value - Top-ups - RSPs), capped at S$500,000 / US$350,000</li>
+                                <li>Less any outstanding fees and charges.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Death on or after Policy Anniversary nearest to Life Assured's 66th birthday:</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li>101% of (Total Account Value)</li>
+                                <li>Less any outstanding fees and charges.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="text-xs mt-2 text-gray-500">Note: If non-accidental death occurs within 18 months from commencement/reinstatement, the Death Benefit will not include the Account Value relating to the Start-up Bonus.</p>
+                </div>
+                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Terminal Illness (TI) Benefit</h3>
+                    <p class="text-sm mb-1">If the Life Assured is diagnosed with a Terminal Illness while the policy is in force, a lump sum will be paid as an advancement of the Death Benefit. The amount is the lower of:</p>
+                    <ul class="list-disc list-inside text-sm ml-4">
+                        <li>SGD 3 million (or equivalent)</li>
+                        <li>The Death Benefit payable at the point of TI claim.</li>
+                    </ul>
+                    <p class="text-xs mt-2 text-gray-500">The maximum TI Benefit across all policies with HSBC Life and other insurers for the same Life Assured is SGD 3 million. If TI condition commences within 18 months from commencement/reinstatement, the TI Benefit will not include the Account Value relating to the Start-up Bonus. The policy may terminate or continue with a reduced value depending on the payout.</p>
+                </div>
+                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Life Replacement Option (LRO)</h3>
+                    <p class="text-sm mb-1">A unique feature allowing an individual policyholder to request to change the Life Assured on the policy. Subject to conditions, such as:</p>
+                    <ul class="list-disc list-inside text-sm ml-4 space-y-1">
+                        <li>Policyholder must be an individual.</li>
+                        <li>Proof of insurable interest on the new Life Assured.</li>
+                        <li>New Life Assured must meet eligibility criteria (age, alive).</li>
+                        <li>New Life Assured can be spouse, child (below 18), or the policyholder themselves (if originally a third-party policy).</li>
+                        <li>New riders may require underwriting. Insurance Charge will be based on the new Life Assured.</li>
+                        <li>Previous assignments or nominations must be revoked.</li>
+                        <li>Waiting periods for benefits will apply to the new Life Assured.</li>
+                        <li>Any attached Riders on the original Life Assured will be dropped.</li>
+                    </ul>
+                    <p class="text-xs mt-2 text-gray-500">HSBC Life reserves the right to approve or reject the LRO request.</p>
+                </div>
+                 <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Dividend Distribution (for dividend-paying ILP Sub-Funds)</h3>
+                    <p class="text-sm mb-1">If you invest in ILP Sub-Funds that pay dividends, you can choose to:</p>
+                    <ul class="list-disc list-inside text-sm ml-4 space-y-1">
+                        <li><strong>Reinvest dividends:</strong> Buys more units in the fund, increasing your policy value. This is the default.</li>
+                        <li><strong>Receive cash payout:</strong> Paid to your designated bank account if the dividend amount is S$30 or more. Otherwise, it will be reinvested.</li>
+                    </ul>
+                    <p class="text-xs mt-2 text-gray-500">Dividend distributions are not guaranteed and depend on the fund manager.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="flexibility" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">6. Flexibility for Life's Changes</h2>
+            <p class="mb-4">Life is unpredictable. This plan offers several options to adapt to your changing needs.</p>
+            <div class="space-y-4">
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Partial Withdrawals</summary>
+                    <p class="text-sm mt-2">You can withdraw part of your account value, subject to conditions. Minimum withdrawal is S$1,000 / US$700.</p>
+                    <div class="mt-2 space-y-2">
+                        <div>
+                            <h4 class="font-medium text-md">During ICP (Initial Contribution Period):</h4>
+                            <ul class="list-disc list-inside text-sm ml-4">
+                                <li>From <strong class="text-green-600">AUA only</strong> (if you've made top-ups).</li>
+                                <li>Subject to <strong class="text-red-600">7% PWC</strong>.</li>
+                                <li>Withdrawal from IUA is not allowed.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-md">After ICP to End of MIP:</h4>
+                            <ul class="list-disc list-inside text-sm ml-4">
+                                <li>From <strong class="text-green-600">AUA only</strong>.</li>
+                                <li><strong class="text-green-600">Free Partial Withdrawal Benefit:</strong>
+                                    <span class="mip-specific" data-mip="25">
+                                        <ul class="list-circle list-inside ml-4">
+                                            <li>Policy Years 1-15 (after ICP): 2 free withdrawals total.</li>
+                                            <li>Policy Years 16-20: 1 additional (max 3 total, less previous).</li>
+                                            <li>Policy Years 21-25: 2 additional (max 5 total, less previous).</li>
+                                        </ul>
+                                    </span>
+                                    <span class="mip-specific" data-mip="30" style="display:none;">
+                                        <ul class="list-circle list-inside ml-4">
+                                            <li>Policy Years 1-15 (after ICP): 2 free withdrawals total.</li>
+                                            <li>Policy Years 16-20: 2 additional (max 4 total, less previous).</li>
+                                            <li>Policy Years 21-25: 1 additional (max 5 total, less previous).</li>
+                                            <li>Policy Years 26-30: 2 additional (max 7 total, less previous).</li>
+                                        </ul>
+                                    </span>
+                                    Each free withdrawal is capped at 2 times your Annualised Regular Premium.
+                                </li>
+                                <li>Other withdrawals subject to <strong class="text-red-600">7% PWC</strong>.</li>
+                                <li>*Impact:* No Power-up Bonus for 12 months after *any* partial withdrawal.</li>
+                                <li>Withdrawal from IUA is not allowed.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-md">After End of MIP:</h4>
+                            <ul class="list-disc list-inside text-sm ml-4">
+                                <li>From <strong class="text-teal-600">IUA or AUA</strong>.</li>
+                                <li><strong class="text-green-600">No PWC</strong>.</li>
+                                <li>*Impact:* No Loyalty Bonus for 12 months after *any* partial withdrawal.</li>
+                                <li>Remaining Total Account Value must meet Minimum Account Balance (S$3,600/US$2,520).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Premium Holiday</summary>
+                    <p class="text-sm mt-2">Allows you to temporarily stop paying Regular Premiums.</p>
+                    <ul class="list-disc list-inside text-sm ml-4 space-y-1">
+                        <li><strong>Availability:</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li><strong class="text-red-600">Not allowed during ICP.</strong> Policy will lapse if premiums unpaid.</li>
+                                <li>Allowed <strong class="text-green-600">after ICP until end of MIP:</strong> Up to a total aggregate of 84 months.</li>
+                                <li>Allowed <strong class="text-green-600">after end of MIP:</strong> Unlimited duration.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Activation:</strong> Can be applied for, or triggers automatically if Regular Premium is unpaid after grace period (provided Total Account Value is sufficient to cover charges).</li>
+                        <li><strong>Impact during MIP:</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li>No Power-up Bonus during the holiday or for 12 months after resuming payments (unless missed premiums are fully repaid under specific conditions).</li>
+                                <li>Policy charges (AMF, IMF) continue to be deducted from Total Account Value.</li>
+                                <li>If Total Account Value becomes insufficient to cover charges, premium holiday ceases, and you'll be asked to resume payments. Failure to do so can lead to policy lapse and EEC.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Repayment of Missed Premiums:</strong> Possible under specific conditions, which can reinstate missed Power-up/Loyalty Bonuses.</li>
+                    </ul>
+                </details>
+
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Reduction of Regular Premium</summary>
+                    <p class="text-sm mt-2">You can apply to reduce your Regular Premium amount.</p>
+                    <ul class="list-disc list-inside text-sm ml-4 space-y-1">
+                        <li><strong>Availability:</strong> Any time <strong class="text-green-600">after ICP until end of Policy Term</strong>.</li>
+                        <li><strong>Limit:</strong> Can be reduced by a maximum of 25% of the original Regular Premium, subject to minimum premium requirements.</li>
+                        <li><strong>Consequences during MIP:</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li><strong class="text-red-600">Bonus Recovery Charge (BRC)</strong> applies (deducted from IUA).</li>
+                                <li>No Power-up Bonus for 12 months.</li>
+                            </ul>
+                        </li>
+                        <li>Once reduced, you <strong class="text-red-600">cannot increase it thereafter</strong>.</li>
+                    </ul>
+                </details>
+
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Increase of Regular Premium</summary>
+                    <p class="text-sm mt-2">The Regular Premium set at policy inception <strong class="text-red-600">cannot be increased</strong> at any time.</p>
+                </details>
+
+                <details class="p-3 border rounded-lg hover:shadow-md transition-shadow">
+                    <summary class="font-semibold text-lg text-teal-600 cursor-pointer">Recurring Single Premium (RSP) & Top-Up Premium</summary>
+                    <p class="text-sm mt-2">You can make additional ad-hoc investments into your policy.</p>
+                    <ul class="list-disc list-inside text-sm ml-4 space-y-1">
+                        <li>Allowed anytime during the policy term (except during Premium Holiday).</li>
+                        <li>Allocated to <strong class="text-green-600">AUA</strong>. No premium charge on these.</li>
+                        <li><strong>Minimum RSP:</strong> S$100 per month (multiples of S$100). Not allowed for USD.</li>
+                        <li><strong>Minimum Top-up Premium:</strong> S$5,000 / US$3,500 (multiples of S$100/US$100).</li>
+                    </ul>
+                </details>
+            </div>
+        </section>
+
+        <section id="suitability" class="mb-12 p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b-2 border-teal-200 pb-2">7. Is This Plan for You? Suitability & Key Risks</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Who is it Suitable For?</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Individuals seeking a <strong class="text-teal-600">long-term investment and savings solution</strong> (MIP of 25 or 30 years).</li>
+                        <li>Those comfortable with <strong class="text-teal-600">investment risks</strong> for potentially higher returns compared to traditional savings.</li>
+                        <li>People who appreciate a <strong class="text-teal-600">disciplined approach</strong> to regular premium payments.</li>
+                        <li>Those who want <strong class="text-teal-600">life insurance coverage</strong> integrated with their investments.</li>
+                        <li>Individuals attracted by <strong class="text-teal-600">bonus features</strong> that can enhance wealth accumulation.</li>
+                        <li>Singaporeans planning for long-term goals like retirement or general wealth building, who also value protection.</li>
+                    </ul>
+                    <h3 class="text-xl font-semibold text-teal-600 mt-4 mb-2">Unique Selling Points (USPs)</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li><strong class="text-teal-600">Triple Bonus Structure:</strong> Start-up, Power-up, and Loyalty bonuses.</li>
+                        <li><strong class="text-teal-600">Life Replacement Option:</strong> Flexibility to change the Life Assured.</li>
+                        <li><strong class="text-teal-600">Guaranteed Issuance Offer:</strong> Generally no medical underwriting required.</li>
+                        <li>Choice of SGD or USD policy currency.</li>
+                        <li>Protected under the Policy Owners' Protection Scheme in Singapore.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-red-600 mb-2">Key Risks & Important Notes</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-red-700">
+                        <li><strong class="font-semibold">Investment Risk:</strong> The value of your ILP Sub-Funds can fall as well as rise. You may lose the principal amount invested. Past performance is not indicative of future results.</li>
+                        <li><strong class="font-semibold">Long-Term Commitment:</strong> Early termination or surrender, especially during the MIP, usually involves high costs (like EEC) and the surrender value may be less than total premiums paid.</li>
+                        <li><strong class="font-semibold">Fees and Charges:</strong> These will impact your overall returns. Understand them fully.</li>
+                        <li><strong class="font-semibold">Market Fluctuations:</strong> Economic and market conditions can affect fund performance.</li>
+                        <li><strong class="font-semibold">Non-Guaranteed Benefits:</strong> Bonuses (except Start-up Bonus rates, if premiums are paid) and fund returns are not guaranteed. Power-up and Loyalty bonuses depend on prevailing account value and meeting eligibility.</li>
+                        <li><strong class="font-semibold">Policy Terms & Conditions:</strong> This is a summary. The actual terms are in the Policy Contract and General Provisions.</li>
+                        <li><strong class="font-semibold">Free-Look Period:</strong> You have 14 days from receiving your policy to review it. If you cancel within this period, premiums paid will be refunded less any medical/other expenses incurred by the insurer. The refund amount for ILPs can be affected by market movements.</li>
+                    </ul>
+                    <p class="mt-4 text-sm">Always consult a qualified Financial Planner to assess if this product is suitable for your specific financial situation, objectives, and risk appetite before making a commitment.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-teal-800 text-white text-center p-6 mt-12">
+        <p class="text-sm">&copy; <span id="currentYear"></span> HSBC Life Wealth Accelerate - Interactive Guide. For illustrative purposes only.</p>
+        <p class="text-xs mt-1">This is not financial advice. Please refer to the official product summary and policy documents from HSBC Life (Singapore) Pte. Ltd. and consult a financial advisor.</p>
+    </footer>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Tab functionality for MIP selection
+        const mip25Btn = document.getElementById('mip25Btn');
+        const mip30Btn = document.getElementById('mip30Btn');
+        const mipSpecificElements = document.querySelectorAll('.mip-specific');
+        let currentMIP = 25; // Default MIP
+
+        function updateMIPView(selectedMIP) {
+            currentMIP = selectedMIP;
+            mipSpecificElements.forEach(el => {
+                if (parseInt(el.dataset.mip) === selectedMIP) {
+                    el.style.display = '';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            if (selectedMIP === 25) {
+                mip25Btn.classList.add('active');
+                mip30Btn.classList.remove('active');
+            } else {
+                mip30Btn.classList.add('active');
+                mip25Btn.classList.remove('active');
+            }
+            // Redraw chart if it exists and is visible
+            if (typeof eecChart !== 'undefined' && eecChart) {
+                updateEECChartData(selectedMIP);
+            }
+        }
+
+        mip25Btn.addEventListener('click', () => updateMIPView(25));
+        mip30Btn.addEventListener('click', () => updateMIPView(30));
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('header nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Adjust for sticky header height
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // EEC Chart Data
+        const eecData = {
+            25: {
+                labels: Array.from({ length: 26 }, (_, i) => `Year ${i + 1}`),
+                values: [100, 94, 93, 92, 91, 90, 89, 88, 86, 82, 78, 74, 70, 65, 56, 47, 39, 31, 25, 23, 20, 18, 15, 12, 8, 0]
+            },
+            30: {
+                labels: Array.from({ length: 31 }, (_, i) => `Year ${i + 1}`),
+                values: [100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 75, 68, 58, 48, 40, 32, 26, 24, 22, 20, 19, 18, 17, 16, 15, 13, 10, 8, 0]
+            }
+        };
+
+        let eecChart;
+
+        function createEECChart(mip) {
+            const ctx = document.getElementById('eecChart').getContext('2d');
+            if (eecChart) {
+                eecChart.destroy(); // Destroy previous chart instance if exists
+            }
+            eecChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: eecData[mip].labels,
+                    datasets: [{
+                        label: `EEC Rate for ${mip}-Year MIP (%)`,
+                        data: eecData[mip].values,
+                        borderColor: '#0D9488', // Teal
+                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                        tension: 0.1,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'EEC Rate (%)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Policy Year'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.formattedValue}%`;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateEECChartData(mip) {
+            if (eecChart) {
+                eecChart.data.labels = eecData[mip].labels;
+                eecChart.data.datasets[0].data = eecData[mip].values;
+                eecChart.data.datasets[0].label = `EEC Rate for ${mip}-Year MIP (%)`;
+                eecChart.update();
+            }
+        }
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            updateMIPView(25); // Initialize with 25-year MIP view
+            createEECChart(25); // Create initial chart
+        });
+
+    </script>
+</body>
+</html>
+
